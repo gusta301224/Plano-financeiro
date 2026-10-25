@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+
+```
+<title>Meu Planejamento Financeiro</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- Biblioteca para os gráficos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+```
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+```
+<div class="brand">
+    <div class="brand-icon">R$</div>
+
+    <div>
+        <h1>Minhas Finanças</h1>
+        <span>Planejamento financeiro mensal</span>
+    </div>
+</div>
+
+<div class="header-buttons">
+    <button class="btn secondary" id="exportarBtn">
+        Exportar
+    </button>
+
+    <button class="btn secondary" id="importarBtn">
+        Importar
+    </button>
+
+    <button class="btn primary" id="novaDespesaBtn">
+        + Nova despesa
+    </button>
+</div>
+```
+
+</header>
+
+<main class="container">
+
+```
+<!-- MÊS -->
+
+<section class="month-selector">
+
+    <button id="mesAnterior" class="month-button">
+        ‹
+    </button>
+
+    <div>
+        <span>Planejamento de</span>
+        <h2 id="mesAtual"></h2>
+    </div>
+
+    <button id="mesProximo" class="month-button">
+        ›
+    </button>
+
+</section>
+
+
+<!-- RESUMO -->
+
+<section class="summary-grid">
+
+    <div class="summary-card">
+        <div class="summary-title">
+            <span>Receitas</span>
+            <div class="summary-icon green">↑</div>
+        </div>
+
+        <strong id="totalReceitas">R$ 0,00</strong>
+
+        <small>Entradas do mês</small>
+    </div>
+
+
+    <div class="summary-card">
+        <div class="summary-title">
+            <span>Despesas</span>
+            <div class="summary-icon red">↓</div>
+        </div>
+
+        <strong id="totalDespesas">R$ 0,00</strong>
+
+        <small>Gastos do mês</small>
+    </div>
+
+
+    <div class="summary-card">
+        <div class="summary-title">
+            <span>Saldo</span>
+            <div class="summary-icon blue">=</div>
+        </div>
+
+        <strong id="saldo">R$ 0,00</strong>
+
+        <small>Disponível no mês</small>
+    </div>
+
+
+    <div class="summary-card">
+        <div class="summary-title">
+            <span>Economia</span>
+            <div class="summary-icon purple">%</div>
+        </div>
+
+        <strong id="taxaEconomia">0%</strong>
+
+        <small>Percentual economizado</small>
+    </div>
+
+</section>
+
+
+<!-- RECEITAS / DESPESAS -->
+
+<section class="two-columns">
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h3>Receitas</h3>
+                <p>Dinheiro que entra</p>
+            </div>
+
+            <button class="small-btn" id="novaReceitaBtn">
+                + Adicionar
+            </button>
+        </div>
+
+        <div id="listaReceitas"></div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h3>Despesas</h3>
+                <p>Dinheiro que sai</p>
+            </div>
+
+            <button class="small-btn" id="novaDespesaBtn2">
+                + Adicionar
+            </button>
+        </div>
+
+        <div id="listaDespesas"></div>
+
+    </div>
+
+</section>
+
+
+<!-- GRÁFICOS -->
+
+<section class="two-columns">
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h3>Despesas por categoria</h3>
+                <p>Veja onde seu dinheiro está indo</p>
+            </div>
+        </div>
+
+        <div class="chart-box">
+            <canvas id="graficoCategorias"></canvas>
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h3>Receitas x Despesas</h3>
+                <p>Visão dos últimos meses</p>
+            </div>
+        </div>
+
+        <div class="chart-box">
+            <canvas id="graficoMensal"></canvas>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- META -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <div>
+            <h3>Meta de economia</h3>
+            <p>Quanto você quer guardar neste mês?</p>
+        </div>
+
+        <button class="small-btn" id="editarMetaBtn">
+            Editar
+        </button>
+
+    </div>
+
+
+    <div class="goal-values">
+
+        <div>
+            <span>Economizado</span>
+            <strong id="valorEconomizado">
+                R$ 0,00
+            </strong>
+        </div>
+
+        <div>
+            <span>Meta</span>
+            <strong id="valorMeta">
+                R$ 0,00
+            </strong>
+        </div>
+
+    </div>
+
+
+    <div class="progress">
+        <div id="barraMeta"></div>
+    </div>
+
+    <p id="textoMeta">
+        Defina uma meta para começar.
+    </p>
+
+</section>
+
+
+<!-- CONTAS -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <div>
+            <h3>Contas recorrentes</h3>
+            <p>Contas que você paga todos os meses</p>
+        </div>
+
+        <button class="small-btn" id="novaContaBtn">
+            + Adicionar
+        </button>
+
+    </div>
+
+    <div id="listaContas"></div>
+
+</section>
+
+
+<!-- CARTÕES -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <div>
+            <h3>Cartões de crédito</h3>
+            <p>Controle seus limites</p>
+        </div>
+
+        <button class="small-btn" id="novoCartaoBtn">
+            + Adicionar
+        </button>
+
+    </div>
+
+    <div id="listaCartoes" class="credit-card-grid"></div>
+
+</section>
+
+
+<!-- PARCELAMENTOS -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <div>
+            <h3>Parcelamentos</h3>
+            <p>Compras parceladas</p>
+        </div>
+
+        <button class="small-btn" id="novoParcelamentoBtn">
+            + Adicionar
+        </button>
+
+    </div>
+
+    <div id="listaParcelamentos"></div>
+
+</section>
+
+
+<!-- INVESTIMENTOS -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <div>
+            <h3>Investimentos</h3>
+            <p>Acompanhe seu patrimônio</p>
+        </div>
+
+        <button class="small-btn" id="novoInvestimentoBtn">
+            + Adicionar
+        </button>
+
+    </div>
+
+    <div id="listaInvestimentos"></div>
+
+</section>
+
+
+<!-- CHECKLIST -->
+
+<section class="panel">
+
+    <div class="panel-header">
+
+        <div>
+            <h3>Checklist financeiro</h3>
+            <p>Organize suas tarefas do mês</p>
+        </div>
+
+        <button class="small-btn" id="novaTarefaBtn">
+            + Adicionar
+        </button>
+
+    </div>
+
+    <div id="listaTarefas"></div>
+
+</section>
+
+
+<!-- BOTÕES -->
+
+<section class="bottom-actions">
+
+    <button class="btn secondary" id="backupBtn">
+        Fazer backup
+    </button>
+
+    <button class="btn danger" id="limparBtn">
+        Limpar mês
+    </button>
+
+</section>
+```
+
+</main>
+
+<!-- MODAL -->
+
+<div id="modal" class="modal hidden">
+
+```
+<div class="modal-content">
+
+    <div class="modal-header">
+
+        <h2 id="modalTitulo">Adicionar</h2>
+
+        <button id="fecharModal" class="close-btn">
+            ×
+        </button>
+
+    </div>
+
+    <div id="modalConteudo"></div>
+
+</div>
+```
+
+</div>
+
+<!-- IMPORTAÇÃO -->
+
+<input
+type="file"
+id="arquivoImportacao"
+accept=".json"
+hidden
+
+>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
